@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mx-4 my-3">Exlorer</h1>
+<div class="container">
+<div class="row">
+<div class="outer-tree">
+  <ul class="tree">
+    <li><span class="tree-arrow">Topics (64)</span>
+      <ul class="nested">
+        <li>sub 1</li>
+        <li>sub 2</li>
+        <li><span class="tree-arrow">sub 3 (5)</span>
+          <ul class="nested">
+            <li>Item 3.1</li>
+            <li>Item 3.2</li>
+            <li><span class="tree-arrow">Item 3.3</span>
+              <ul class="nested">
+                <li>Item 3.3.1 -- 220</li>
+                <li>Item 3.3.2 = Alpha</li>
+                <li>Item 3.3.3 = 200-OK</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+</div>
+</div>
+<script>
+
+  var toggler = document.getElementsByClassName("tree-arrow");
+  var i;
+
+  for (i = 0; i < toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("active");
+      this.classList.toggle("tree-arrow-down");
+    });
+  }
+
+</script>
+{% endblock content %}

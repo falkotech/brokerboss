@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mx-4 my-3">Access control list</h1>
+{# Pattern rules #}
+<h3 class="mx-5 my-3"><i class="fas fa-list"></i> Pattern rules</h3> 
+<div class="mx-4 my-3 card card-frame">
+    <div class="card-body">
+      <h4>Add a pattern rule <a tabindex="0" class="" role=""
+        data-bs-toggle="popover" data-bs-trigger="focus" title="Pattern Rules"
+        data-bs-content="ACL (Access Control List) pattern rules in specify the topics that a client is allowed to access. These rules are used to 
+        control the permissions of clients to publish and subscribe to topics. There are two types of wildcards used in these rules. '%c' for client and '%u' for username. "><i
+            class="fas fa-info-circle"></i></i></a></h4>
+        {# FORM TO ADD pattern rules #}
+        <form method="POST">
+            {{ pattern_form.hidden_tag() }}
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group input-group-outline my-3">
+                {{ pattern_form.pattern.label(class="form-label") }}
+                {{ pattern_form.pattern(class="form-control") }}
+                </div>
+                {% if pattern_form.errors %}
+                  {% for error in pattern_form.errors.pattern %}
+                    <div class="text-danger"><small>{{ error }}</small></div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="col-md-1 pt-3">
+                <div class="form-check">
+                    {{ pattern_form.read(class="form-check-input",type="checkbox", value="read", id="read", checked="") }}
+                    {{ pattern_form.read.label(class="custom-control-label") }}
+                </div>
+              </div>
+              <div class="col-md-1 pt-3">
+                   <div class="form-check">
+                    {{ pattern_form.write(class="form-check-input",type="checkbox", value="write", id="write", checked="") }}
+                    {{ pattern_form.write.label(class="custom-control-label") }}
+                    </div>
+              </div>
+              <div class="col-md-1">
+                <div class="form-check">
+                 {{ pattern_form.add_rule(class="px-5 btn btn-lg btn-primary") }}
+                 </div>
+           </div>
+               
+            </div>
+            </form>
+          </div>
+        </div>
+  {# Pattern rules table #}
+  <div class="mx-5 my-3">
+    <table class="table table-striped table-hover">
+        <thead class="text-primary">
+            <tr>
+                <th class="col-sm-6">Topic</th>
+                <th class="col-sm-1">Read</th>
+                <th class="col-sm-1">Write</th>
+                <th class="col-sm-1">Delete</th>
+            </tr>
+        </thead>
+        {% for topic,access in pattern_rules.items() %}
+        <tr>
+            <td>{{topic}}</td>
+            <td>{% if "read" in access %}
+                <i class="text-success fas fa-check-circle"></i>
+            {% endif %}
+            </td>
+            <td>{% if "write" in access %}
+                <i class="text-success fas fa-check-circle"></i>
+        {% endif %}
+        </td>
+            <td>
+              <form method="post" action="" onsubmit="if( confirm('Do you really want to remove: {{topic}}')) {this.submit();}">
+                {{ pattern_form.hidden_tag() }}
+                <a href="javascript:void();" onclick="this.closest('form').onsubmit();" class="delbtn" ><i class="fas fa-trash"></i></a>
+                <input type="hidden" name="delete_pattern" value="{{ topic }}" />
+                </form>
+          </td>
+          </tr>
+        {% endfor %}
+      </table>
+  </div>
+
+
+
+
+
+
+  <hr class="horizontal dark mt-5">
+  {# USER rules table #}
+  <div class="mx-5 my-3">
+  <h3 class=" "><i class="fas fa-user-lock"></i> User rules</h3> 
+  <table class="table table-striped table-hover">
+      <thead class="text-primary">
+          <tr>
+              <th class="col-sm-1">Username</th>
+              <th class="col-sm-5">Topic</th>
+              <th class="col-sm-1">Read</th>
+              <th class="col-sm-1">Write</th>
+              <th class="col-sm-1">Edit</th>
+          </tr>
+      </thead>
+      
+      {% for user,topics_dict in user_rules.items() %}
+      <tr>
+        <td>{{ user }}</td>
+        <td>{% for topic,_access in topics_dict.items() %}{{ topic }} <br>{% endfor %}</td>
+        <td>{% for _topic,access in topics_dict.items() %}{% if "read" in access %} <i class="text-success fas fa-check-circle"></i>{% endif %}<br>{% endfor %}</td>
+        <td>{% for _topic,access in topics_dict.items() %}{% if "write" in access %} <i class="text-success fas fa-check-circle"></i>{% endif %}<br>{% endfor %}</td>
+        <td>
+          <a href="{{ url_for('basic.edit_user', usr=user) }}"><i class="fas fa-user-edit"></i></a>
+        </td>
+        
+      </tr>
+      {% endfor %}
+      
+    </table>
+</div>  
+{% endblock content%}
+
+
+

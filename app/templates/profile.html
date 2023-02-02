@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mx-4 my-3">Profile</h1>
+
+            <div class="mx-4 my-3 card card-frame">
+                <div class="card-body">
+                    <h3><i class="fas fa-user-circle"></i> User info</h3>
+                    <div class="row">
+                        <div class="">
+                            <p><strong>Email:</strong> {{ user.user_data.email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<div class="mx-4 my-3 card card-frame">
+    <div class="card-body">
+        <h3><i class="fas fa-lock"></i> Change password</h3>
+        {# FORM TO CHANGE PASSWORD #} 
+        <div class="col-md-6 col-lg-4 col-xl-3">
+        <form action="" method="POST">
+          {{ form.hidden_tag() }}
+        {# old password input field #}
+        <div class="input-group input-group-outline my-2">
+            {% if form.old_password.errors %}
+                {{ form.old_password.label(class="form-label") }} 
+                {{ form.old_password(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.old_password.errors %}
+                            <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+            {{ form.old_password.label(class="form-label") }} 
+            {{ form.old_password(class="form-control") }}
+            {% endif %}
+        </div>
+
+        {# NEW PASSWORD input field #}
+        <div class="input-group input-group-outline my-2">
+
+            {% if form.new_password.errors %}
+                {{ form.new_password.label(class="form-label") }} 
+                {{ form.new_password(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.new_password.errors %}
+                            <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+            {{ form.new_password.label(class="form-label") }}   
+            {{ form.new_password(class="form-control") }}
+            {% endif %}
+        </div>
+
+        {# CONFIRM PASSWORD input field #}
+        <div class="input-group input-group-outline my-2">
+            {% if form.confirm_password.errors %}
+                {{ form.confirm_password.label(class="form-label") }} 
+                {{ form.confirm_password(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.confirm_password.errors %}
+                            <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+            {{ form.confirm_password.label(class="form-label") }}   
+            {{ form.confirm_password(class="form-control") }}
+            {% endif %}
+        </div>
+
+        {# SAVE PASSWORD BUTTON #}
+        {{ form.save(class="mt-4 px-5 btn btn-lg btn-primary") }}
+    </form>
+</div>
+    </div>
+  </div>
+
+{% endblock content%}
+
+
+

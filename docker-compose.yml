@@ -1,0 +1,27 @@
+#docker-compose.yml
+version: "3"
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+      - "1883:1883"
+    environment:
+      - FLASK_SECRET_KEY=change-this-secreeeet
+      - MONGODB_URI=mongodb://rootuser:rootpass@mongo:27017
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_LOG_LEVEL: error
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongo-data:

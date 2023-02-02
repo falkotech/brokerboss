@@ -1,0 +1,564 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mx-4 my-3">Broker Configuration</h1>
+{# NAVIGATION TABS #}
+<div class="row">
+    <div class="container col-md-6 my-5">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-general-tab" data-bs-toggle="tab" data-bs-target="#nav-general"
+                    type="button" role="tab">
+                    General
+                </button>
+
+                <button class="nav-link" id="nav-listeners-tab" data-bs-toggle="tab" data-bs-target="#nav-listeners"
+                    type="button" role="tab">
+                    Listeners
+                </button>
+
+                <button class="nav-link" id="nav-logging-tab" data-bs-toggle="tab" data-bs-target="#nav-logging"
+                    type="button" role="tab">
+                    Logging
+                </button>
+
+                <button class="nav-link" id="nav-security-tab" data-bs-toggle="tab" data-bs-target="#nav-security"
+                    type="button" role="tab">
+                    Security
+                </button>
+
+            </div>
+        </nav>
+        {# TAB CONTENT #}
+        <form method="post">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="mt-4"></div>
+
+                {# GENERAL TAB #}
+
+                {# PER LISTENER SETTINGS ARE DISABLED IN v1.0 #}
+                <div class="tab-pane show active p-3" id="nav-general" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="per_listener_settings">Per Listener
+                                    Settings</label>
+                                <input class="form-check-input" id="per_listener_settings" name="per_listener_settings"
+                                    type="checkbox" value="y" disabled
+                                    data-form-type="other">
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    data-bs-content="This feature is not available yet. It is on the roadmap for BrokerBoss v2.0"
+                                    aria-label="Per Listener Settings" data-bs-original-title="Per Listener Settings"><i
+                                        class="fas fa-info-circle" aria-hidden="true"></i></a>
+
+                            </div>
+                            {# PER LISTENER SETTINGS IN v2.0
+                            <div class="form-check form-switch">
+                                {{ form.per_listener_settings.label(class="form-check-label") }}
+                                {{ form.per_listener_settings(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Per Listener Settings"
+                                    data-bs-content="If this option is set to true, then all authentication and access controloptions are controlled on a per listener basis. The following options are affected:
+                    acl_file, allow_anonymous, allow_zero_length_clientid, auto_id_prefix, password_file, plugin, plugin_opt_, psk_file
+                    Note that if set to true, then a durable client (i.e. with clean session setto false) that has disconnected will use the ACL settings defined for thelistener that it was most recently connected to.
+                    The default behaviour is for this to be set to false, which maintains the setting behaviour from previous versions of mosquitto."><i
+                                        class="fas fa-info-circle"></i></i></a>
+                                {% if form.errors %}
+                                {% for error in form.errors.per_listener_settings %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            #}
+                            {# ALLOW ZERO LENGTH CLIENT ID #}
+                            <div class="form-check form-switch">
+                                {{ form.allow_zero_length_clientid.label(class="form-check-label") }}
+                                {{ form.allow_zero_length_clientid(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Zero length Client ID" data-bs-content="This option controls whether a client is allowed to connect with a zero
+                    length client id or not. This option only affects clients using MQTT v3.1.1
+                    and later. If set to false, clients connecting with a zero length client id
+                    are disconnected. If set to true, clients will be allocated a client id by
+                    the broker. This means it is only useful for clients with clean session set
+                    to true."><i class="fas fa-info-circle"></i></a>
+                                {% if form.errors %}
+                                {% for error in form.errors.allow_zero_length_clientid %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# AUTO ID PREFIX #}
+                            <div class="my-4">
+                                {{ form.auto_id_prefix.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Auto ID Prefix"
+                                    data-bs-content="If 'Allow Zero Length Clientid' is true, this option allows you to set a prefix
+                    to automatically generated client ids to aid visibility in logs. Defaults to 'auto-'"><i
+                                        class="fas fa-info-circle"></i></i></a><br>
+                                {{ form.auto_id_prefix(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.auto_id_prefix %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# CHECK RETAIN SOURCE #}
+                            <div class="form-check form-switch">
+                                {{ form.check_retain_source.label(class="form-check-label") }}
+                                {{ form.check_retain_source(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Check Retain Source" data-bs-content="This option affects the scenario when a client subscribes to a topic that has
+                    retained messages. It is possible that the client that published the retained
+                    message to the topic had access at the time they published, but that access
+                    has been subsequently removed. If check_retain_source is set to true, the
+                    default, the source of a retained message will be checked for access rights
+                    before it is republished. When set to false, no check will be made and the
+                    retained message will always be published. This affects all listeners."><i
+                                        class="fas fa-info-circle"></i></i></a>
+                                {% if form.errors %}
+                                {% for error in form.errors.check_retain_source %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MAX INFLIGHT BYTES #}
+                            <div class="my-4">
+                                {{ form.max_inflight_bytes.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Max Inflight Bytes"
+                                    data-bs-content="QoS 1 and 2 messages will be allowed inflight per client until this limit
+                    is exceeded.  Defaults to 0. (No maximum)
+                    See also max_inflight_messages"><i class="fas fa-info-circle"></i></i></a>
+                                {{ form.max_inflight_bytes(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_inflight_bytes %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MAX INFLIGHT MESSAGES #}
+                            <div class="my-4">
+                                {{ form.max_inflight_messages.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Max Inflight Messages"
+                                    data-bs-content="The maximum number of QoS 1 and 2 messages currently inflight per client.
+                    This includes messages that are partway through handshakes and
+                    those that are being retried. Set to 0 for no
+                    maximum. Setting to 1 will guarantee in-order delivery of QoS 1
+                    and 2 messages. Defaults to 20. "><i class="fas fa-info-circle"></i></i></a><br>
+                                {{ form.max_inflight_messages(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_inflight_messages %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                            {# MAX KEEPALIVE #}
+                            <div class="my-4">
+                                {{ form.max_keepalive.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Max Keepalive"
+                                    data-bs-content="For MQTT v5 clients, it is possible to have the server send a 'server
+                    keepalive' value that will override the keepalive value set by the client.
+                    This is intended to be used as a mechanism to say that the server will
+                    disconnect the client earlier than it anticipated, and that the client should
+                    use the new keepalive value. The max_keepalive option allows you to specify
+                    that clients may only connect with keepalive less than or equal to this
+                    value, otherwise they will be sent a server keepalive telling them to use
+                    max_keepalive. This only applies to MQTT v5 clients. The default, and maximum
+                    value allowable, is 65535.
+                    
+                    Set to 0 to allow clients to set keepalive = 0, which means no keepalive
+                    checks are made and the client will never be disconnected by the broker if no
+                    messages are received. You should be very sure this is the behaviour that you
+                    want.
+                    
+                    For MQTT v3.1.1 and v3.1 clients, there is no mechanism to tell the client
+                    what keepalive value they should use. If an MQTT v3.1.1 or v3.1 client
+                    specifies a keepalive time greater than max_keepalive they will be sent a
+                    CONNACK message with the 'identifier rejected' reason code, and disconnected. The default, and maximum value allowable, is 65535."><i
+                                        class="fas fa-info-circle"></i></i></a><br>
+                                {{ form.max_keepalive(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_keepalive %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MAX PACKET SIZE #}
+                            <div class="my-4">
+                                {{ form.max_packet_size.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Max Packet Size"
+                                    data-bs-content="For MQTT v5 clients, it is possible to have the server send a 'maximum packet
+                    size' value that will instruct the client it will not accept MQTT packets
+                    with size greater than max_packet_size bytes. This applies to the full MQTT
+                    packet, not just the payload. Setting this option to a positive value will
+                    set the maximum packet size to that number of bytes. If a client sends a
+                    packet which is larger than this value, it will be disconnected. This applies
+                    to all clients regardless of the protocol version they are using, but v3.1.1
+                    and earlier clients will of course not have received the maximum packet size
+                    information.
+                    Defaults to no limit. Setting below 20 bytes is forbidden
+                    because it is likely to interfere with ordinary client operation, even with
+                    very small payloads."><i class="fas fa-info-circle"></i></a><br>
+                                {{ form.max_packet_size(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_packet_size %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MAX QUEUED BYTES #}
+                            <div class="my-4">
+                                {{ form.max_queued_bytes.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Max Queued Bytes"
+                                    data-bs-content="QoS 1 and 2 messages above those currently in-flight will be queued per
+                    client until this limit is exceeded. 
+                    See also max_queued_messages.
+                    If both max_queued_messages and max_queued_bytes are specified, packets will
+                    be queued until the first limit is reached.
+                    Defaults to 0. (No maximum)"><i class="fas fa-info-circle"></i></a><br>
+                                {{ form.max_queued_bytes(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_queued_bytes %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MAX QOS #}
+                            <div class="my-4">
+                                {{ form.max_qos.label() }} <a tabindex="0" class="" role="" data-bs-toggle="popover"
+                                    data-bs-trigger="focus" title="Max QOS" data-bs-content="Set the maximum QoS supported. Clients publishing at a QoS higher than
+                    specified here will be disconnected. Default is 2"><i class="fas fa-info-circle"></i></a><br>
+                                {{ form.max_qos(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_qos %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MAX QUEUED MESSAGES #}
+                            <div class="my-4">
+                                {{ form.max_queued_messages.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Max Queued Messages"
+                                    data-bs-content="The maximum number of QoS 1 and 2 messages to hold in a queue per client
+                    above those that are currently in-flight.  Defaults to 1000. Set
+                    to 0 for no maximum (not recommended).
+                    See also queue_qos0_messages.
+                    See also max_queued_bytes."><i class="fas fa-info-circle"></i></a><br>
+                                {{ form.max_queued_messages(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.max_queued_messages %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MEMORY LIMIT #}
+                            <div class="my-4">
+                                {{ form.memory_limit.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Memory Limit"
+                                    data-bs-content="This option sets the maximum number of heap memory bytes that the broker will
+                    allocate, and hence sets a hard limit on memory use by the broker.  Memory
+                    requests that exceed this value will be denied. The effect will vary
+                    depending on what has been denied. If an incoming message is being processed,
+                    then the message will be dropped and the publishing client will be
+                    disconnected. If an outgoing message is being sent, then the individual
+                    message will be dropped and the receiving client will be disconnected.
+                    Defaults to no limit."><i class="fas fa-info-circle"></i></a><br>
+                                {{ form.memory_limit(class="bfinput") }}
+                                {% if form.errors.memory_limit %}
+                                {% for error in form.errors.memory_limit %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# MESSAGE SIZE LIMIT #}
+                            <div class="my-4">
+                                {{ form.message_size_limit.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="Message Size Limit"
+                                    data-bs-content="This option sets the maximum publish payload size that the broker will allow.
+                    Received messages that exceed this size will not be accepted by the broker.
+                    The default value is 0, which means that all valid MQTT messages are
+                    accepted. MQTT imposes a maximum payload size of 268435455 bytes."><i
+                                        class="fas fa-info-circle"></i></a><br>
+                                {{ form.message_size_limit(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.message_size_limit %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# PERSISTANT CLIENT EXPIRATION #}
+                            <div class="my-4">
+                                {{ form.persistant_client_expiration.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Persistant Client Expiration" data-bs-content="This option allows the session of persistent clients (those with clean
+                    session set to false) that are not currently connected to be removed if they
+                    do not reconnect within a certain time frame. This is a non-standard option
+                    in MQTT v3.1. MQTT v3.1.1 and v5.0 allow brokers to remove client sessions.
+                    
+                    Badly designed clients may set clean session to false whilst using a randomly
+                    generated client id. This leads to persistent clients that connect once and
+                    never reconnect. This option allows these clients to be removed.  This option
+                    allows persistent clients (those with clean session set to false) to be
+                    removed if they do not reconnect within a certain time frame.
+                    
+                    The expiration period should be an integer followed by one of h d w m y for
+                    hour, day, week, month and year respectively. For example
+                    
+                    '2m', '14d' or '1y'
+                    
+                    The default if not set is to never expire persistent clients."><i
+                                        class="fas fa-info-circle"></i></a><br>
+                                {{ form.persistant_client_expiration(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.persistant_client_expiration %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# QUEUE QOS 0 MESSAGES #}
+                            <div class="form-check form-switch">
+                                {{ form.queue_qos0_messages.label(class="form-check-label") }}
+                                {{ form.queue_qos0_messages(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Queue QOS 0 Messages" data-bs-content="Set to true to queue messages with QoS 0 when a persistent client is
+                    disconnected. These messages are included in the limit imposed by
+                    max_queued_messages and max_queued_bytes
+                    Defaults to false.
+                    This is a non-standard option for the MQTT v3.1 spec but is allowed in v3.1.1."><i
+                                        class="fas fa-info-circle"></i></a><br>
+                                {% if form.errors %}
+                                {% for error in form.errors.queue_qos0_messages %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# RETAIN AVAILABLE #}
+                            <div class="form-check form-switch">
+                                {{ form.retain_available.label(class="form-check-label") }}
+                                {{ form.retain_available(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Retain available" data-bs-content="Set to false to disable retained message support. If a client publishes a
+                    message with the retain bit set, it will be disconnected if this is set to
+                    false.
+                    Default is true"><i class="fas fa-info-circle"></i></a><br>
+                                {% if form.errors %}
+                                {% for error in form.errors.retain_available %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# SET TCP NODELAY #}
+                            <div class="form-check form-switch">
+                                {{ form.set_tcp_nodelay.label(class="form-check-label") }}
+                                {{ form.set_tcp_nodelay(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Set TCP no delay" data-bs-content="Disable Nagle's algorithm on client sockets. This has the effect of reducing
+                    latency of individual messages at the potential cost of increasing the number
+                    of packets being sent.
+                    Default is false"><i class="fas fa-info-circle"></i></a><br>
+                                {% if form.errors %}
+                                {% for error in form.errors.set_tcp_nodelay %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# SYS Interval #}
+                            <div class="my-4">
+                                {{ form.sys_interval.label() }} <a tabindex="0" class="" role=""
+                                    data-bs-toggle="popover" data-bs-trigger="focus" title="SYS Interval"
+                                    data-bs-content="Time in seconds between updates of the $SYS tree.
+                    Set to 0 to disable the publishing of the $SYS tree.
+                    Default is 10"><i class="fas fa-info-circle"></i></a><br>
+                                {{ form.sys_interval(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in form.errors.sys_interval %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# UPGRADE OUTGOING QOS #}
+                            <div class="form-check form-switch">
+                                {{ form.upgrade_outgoing_qos.label(class="form-check-label") }}
+                                {{ form.upgrade_outgoing_qos(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="SYS Interval" data-bs-content="The MQTT specification requires that the QoS of a message delivered to a
+                    subscriber is never upgraded to match the QoS of the subscription. Enabling
+                    this option changes this behaviour. If upgrade_outgoing_qos is set true,
+                    messages sent to a subscriber will always match the QoS of its subscription.
+                    This is a non-standard option explicitly disallowed by the spec.
+                    Default is false"><i class="fas fa-info-circle"></i></a><br>
+
+                                {% if form.errors %}
+                                {% for error in form.errors.upgrade_outgoing_qos %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                {# LISTENERS TAB #}
+                <div class="tab-pane p-3" id="nav-listeners" role="tabpanel">
+                    <h3>Listeners</h3>
+                
+                    {% for listener_form in form.listener %}
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h4>Listener</h4>
+                        </div>
+                        <div class="card-body">
+                            {# PORT #}
+                            <div class="my-4">
+                                {{ listener_form.port.label() }} <a tabindex="0" class="" role="" data-bs-toggle="popover"
+                                    data-bs-trigger="focus" title="Port" data-bs-content="Listen on a port. You can add multiple listeners can listen on more than one port.
+                                            The port number to listen on must be given. By default, the broker will listen on all interfaces.
+                                            By default, a listener will attempt to listen on both IPv4 and IPv6 interface"><i
+                                        class="fas fa-info-circle"></i></a><br>
+                                {{ listener_form.port(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in listener_form.errors.port %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            {# PROTOCOL #}
+                            <div class="my-4">
+                                {{ listener_form.protocol.label() }} <a tabindex="0" class="" role="" data-bs-toggle="popover"
+                                    data-bs-trigger="focus" title="Protocol" data-bs-content="Choose the protocol to use when listening.
+                                        This can be either mqtt or websockets.
+                                        Certificate based TLS may be used with websockets, except that only the
+                                        cafile, certfile, keyfile, ciphers, and ciphers_tls13 options are supported."></i></a><br>
+                                {{ listener_form.protocol(class="bfinput") }}
+                                {% if form.errors %}
+                                {% for error in listener_form.errors.protocol %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                
+                    </div>
+                        {% endfor %}
+                </div>
+                {# LOGGING TAB #}
+                <div class="tab-pane p-3" id="nav-logging" role="tabpanel">
+                    <h3>Logging</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {# ENABLE LOGGING #}
+                            <div class="form-check form-switch">
+                                {{ form.enable_logging.label(class="form-check-label") }}
+                                {{ form.enable_logging(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Enable logging" data-bs-content="When switched on, you can download the logs below. If logging is disabled, log file will be empty."><i class="fas fa-info-circle"></i></a><br>
+                                {% if form.errors %}
+                                {% for error in form.errors.enable_logging %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <a href= "{{ url_for('download.download_logs') }}" class="btn btn-secondary my-4">Download Logs</a>
+                    
+                </div>
+                {# SECURITY TAB #}
+                <div class="tab-pane p-3" id="nav-security" role="tabpanel">
+                    <h3>Security</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                        {# ALLOW ANONYMOUS #}
+                        <div class="form-check form-switch">
+                            {{ form.allow_anonymous.label(class="form-check-label") }}
+                            {{ form.allow_anonymous(class="form-check-input") }}
+                            <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                title="Allow anonymous" data-bs-content=" If this is enabled, clients are allowed to connect without providing a username.
+                                If disabled, you need to add MQTT users and passwords in order to be able to connect to this broker.
+                                Defaults to false."><i
+                                    class="fas fa-info-circle"></i></i></a>
+                            {% if form.errors %}
+                            {% for error in form.errors.allow_anonymous %}
+                            <div class="text-danger"><small>{{ error }}</small></div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        {# CLIENT ID PREFIX #}
+                        <div class="my-4">
+                            {{ form.clientid_prefixes.label() }} <a tabindex="0" class="" role=""
+                                data-bs-toggle="popover" data-bs-trigger="focus" title="Client ID Prefix"
+                                data-bs-content="If set, only clients that have a matching prefix on their
+                                clientid will be allowed to connect to the broker. By default,
+                                all clients may connect.
+                                For example, setting 'secure-'' here would mean a client 'secure-client' could connect but another with clientid 'mqtt' couldn't."><i
+                                    class="fas fa-info-circle"></i></i></a><br>
+                            {{ form.clientid_prefixes(class="bfinput") }}
+                            {% if form.errors %}
+                            {% for error in form.errors.clientid_prefixes %}
+                            <div class="text-danger"><small>{{ error }}</small></div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="form-check">
+                {{ form.save(class="px-5 btn btn-lg btn-primary") }}
+            </div>
+            {{ form.hidden_tag() }}
+        </form>
+    </div>
+    {# BROKER STATUS CARD with start/stop buttons #}
+    {% if broker_is_running %}
+    <div class="container col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3><span class="text-success"><i class="fas fa-circle"></i></span> Broker is LIVE</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-3">
+                        This broker is running on Mosquitto version {{ mosquitto_version }}. <br>
+                        Listening on ports:
+                        <ul>
+                            {% for port in ports %}
+                            <li>{{ port }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <form method="post" action=""
+                        onsubmit="if( confirm('Do you really want to stop the broker?')) {this.submit();}">
+                        {{ form.hidden_tag() }}
+                        <a href="javascript:void();" onclick="this.closest('form').onsubmit();" class="btn btn-danger">STOP
+                            BROKER</a>
+                        <input type="hidden" name="command" value="stop_broker" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% else %}
+    <div class="container col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3><span class="text-danger"><i class="fas fa-circle"></i></span> Broker is DOWN</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <form method="post" action=""
+                        onsubmit="if( confirm('Do you really want to stop the broker?')) {this.submit();}">
+                        {{ form.hidden_tag() }}
+                        <a href="javascript:void();" onclick="this.closest('form').submit();" class="btn btn-success">START
+                            BROKER</a>
+                        <input type="hidden" name="command" value="start_broker" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+{% endblock content%}

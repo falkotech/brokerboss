@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
+  <title>BrokerBoss Dashboard</title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/6ad1315aff.js" crossorigin="anonymous"></script>
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{{ url_for('static', filename='assets/css/material-dashboard.css') }}" rel="stylesheet" />
+  <link id="pagestyle" href="{{ url_for('static', filename='assets/css/brokerboss.css') }}" rel="stylesheet" />
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+
+  <!-- Content BLOCK -->
+  {% block content %}{% endblock %}
+  </main>
+
+  <!--   Core JS Files   -->
+  <script src="{{ url_for('static', filename='assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/core/bootstrap.min.js') }}"></script>
+
+  <!-- Plugin for the charts, full documentation here: https://www.chartjs.org/ -->
+  <script src="{{ url_for('static', filename='assets/js/plugins/chartjs.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/plugins/Chart.extension.js') }}"></script>
+
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ url_for('static', filename='assets/js/material-dashboard.min.js') }}"></script>
+
+  <!-- Sidebar navigation buttons activation  -->
+  <script>
+    const currentPath = window.location.pathname;
+    const links = document.querySelectorAll('.sidenav .nav-link');
+    links.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active', 'bg-gradient-primary');
+      }
+    });
+  </script>
+
+  <script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl)
+    })
+    var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+      trigger: 'focus'
+    })
+  </script>
+</body>
+
+</html>
+
+<!--
+=========================================================
+* Built with Material Dashboard 2 - v3.0.4
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/material-dashboard
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://www.creative-tim.com/license)
+* Coded by Creative Tim
+
+=========================================================
+-->

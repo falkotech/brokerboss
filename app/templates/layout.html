@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
+  <title>BrokerBoss Dashboard</title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/6ad1315aff.js" crossorigin="anonymous"></script>
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{{ url_for('static', filename='assets/css/material-dashboard.css') }}" rel="stylesheet" />
+  <link id="pagestyle" href="{{ url_for('static', filename='assets/css/brokerboss.css') }}" rel="stylesheet" />
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+
+  
+{# SIDEBAR #}
+  <aside
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark bg-dark"
+    id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand text-center m-0" href="/">
+        <img src="{{ url_for('static', filename='assets/img/logos/brokerboss-logo.png') }}" class="navbar-brand-img h-100"
+          alt="main_logo">
+        
+      </a>
+    </div>
+    <hr class="horizontal light mt-4 mb-2">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{{ url_for('basic.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{{ url_for('basic.explorer') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-stream"></i>
+            </div>
+            <span class="nav-link-text ms-1">Explorer</span>
+          </a>
+        </li>
+  
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Configuration</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{{ url_for('basic.settings') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-server"></i>
+            </div>
+            <span class="nav-link-text ms-1">Settings</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{{ url_for('basic.broker') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-server"></i>
+            </div>
+            <span class="nav-link-text ms-1">MQTT Broker</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{{ url_for('basic.users') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-users"></i>
+            </div>
+            <span class="nav-link-text ms-1">MQTT Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{{ url_for('basic.acl') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-list"></i>
+            </div>
+            <span class="nav-link-text ms-1">MQTT ACL</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+      <div class="mx-3">
+        {% if config_changed %}
+        <hr class="horizontal light">
+        Your configuration changed. Changes don't take effect until you restart the broker.
+        <a class="btn bg-gradient-danger mt-4 w-100" href="{{ url_for('basic.broker') }}" type="button">Go to broker</a>
+        {% endif %}
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    {# TOP NAVBAR #}
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            {# empty div to help with alignment #}
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+            
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false"><i class="fa fa-user me-sm-1" aria-hidden="true"></i> {{current_user.user_data['email']}}
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="{{url_for('admin.profile')}}">
+                    <div class="d-flex py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h4 class="text-sm font-weight-normal mb-1">
+                          <i class="fas fa-user-circle fa-2x"></i>  Profile
+                        </h4>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="{{url_for('admin.logout')}}">
+                    <div class="d-flex py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h4 class="text-sm font-weight-normal mb-1">
+                          <i class="fas fa-sign-out-alt fa-2x"></i>  Log Out
+                        </h4>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      </nav>
+      <!-- first display top flashed messages -->
+      <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible text-white fade show" role="alert">
+              <span class="alert-text"> {{ message }}</span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>            
+
+      <!-- Content BLOCK -->
+  {% block content %}{% endblock %}
+  </main>
+
+  <!--   Core JS Files   -->
+  <script src="{{ url_for('static', filename='assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/core/bootstrap.min.js') }}"></script>
+
+  <!-- Plugin for the charts, full documentation here: https://www.chartjs.org/ -->
+  <script src="{{ url_for('static', filename='assets/js/plugins/chartjs.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/plugins/Chart.extension.js') }}"></script>
+
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ url_for('static', filename='assets/js/material-dashboard.js') }}"></script>
+
+  <!-- Sidebar navigation buttons activation  -->
+  <script>
+    const currentPath = window.location.pathname;
+    const links = document.querySelectorAll('.sidenav .nav-link');
+    links.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active', 'bg-gradient-primary');
+      }
+    });
+  </script>
+
+  <script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl)
+    })
+    var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+      trigger: 'focus'
+    })
+  </script>
+</body>
+
+</html>
+
+<!--
+=========================================================
+* Built with Material Dashboard 2 - v3.0.4
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/material-dashboard
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://www.creative-tim.com/license)
+* Coded by Creative Tim
+
+=========================================================
+-->

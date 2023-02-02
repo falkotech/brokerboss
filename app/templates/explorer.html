@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+.outer-tree{
+  margin-left: 20px;
+}
+.tree{
+    margin:0;
+    padding:0;
+    list-style:none;
+
+}
+
+.tree-arrow{
+  display: inline-block;
+  cursor:pointer;
+  user-select:none;
+  margin-left: -20px;
+}
+.tree-arrow::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 5px;
+}
+.tree-arrow-down::before {
+  transform: rotate(90deg);  
+}
+.nested{
+  display:none;
+  list-style:none;
+}
+.active{
+  display: block;
+}
+
+
+
+    </style>
+
+
+
+    <title>Document</title>
+    
+</head>
+<body>
+    <div class="outer-tree">
+        <ul class="tree">
+          <li><span class="tree-arrow">Topics (64)</span>
+            <ul class="nested">
+              <li>sub 1</li>
+              <li>sub 2</li>
+              <li><span class="tree-arrow">sub 3 (5)</span>
+                <ul class="nested">
+                  <li>Item 3.1</li>
+                  <li>Item 3.2</li>
+                  <li><span class="tree-arrow">Item 3.3</span>
+                    <ul class="nested">
+                      <li>Item 3.3.1 -- 220</li>
+                      <li>Item 3.3.2 = Alpha</li>
+                      <li>Item 3.3.3 = 200-OK</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <script>
+
+var toggler = document.getElementsByClassName("tree-arrow");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("tree-arrow-down");
+  });
+}
+
+      </script>
+</body>
+</html>

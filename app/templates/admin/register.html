@@ -1,0 +1,107 @@
+{% extends "layout_minimal.html" %}
+{% block content %}
+    <section class="dark-version">
+      <div class="page-header min-vh-100">
+        <div class="container">
+          <div class="row">
+            <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('{{ url_for('static', filename='assets/img/illustrations/message-robot.png') }}'); background-size: cover;">
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                {# FLASHED MESSAGES #}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible text-white fade show" role="alert">
+                        <span class="alert-text"> {{ message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+                {# REGISTER CARD #}
+                <div class="card card-frame">
+                    <div class="card-header">
+                  <h4 class="font-weight-bolder">Register</h4>
+                  <p class="mb-0">Enter your email and password to register</p>
+                </div>
+                <div class="card-body">
+                  {# FORM #}
+                  <form method="post" role="form">
+                    {# CSRF HIDDEN TAG #}
+                    {{ form.hidden_tag() }}
+                    {# EMAIL FIELD #}
+                    {% if form.email.errors %}
+                        <div class="input-group input-group-outline mb-3 is-invalid is-filled">
+                            {{ form.email.label(class="form-label") }} 
+                            {{ form.email(class="form-control") }}
+                        </div>
+                        <div class="invalid-feedback mb-4">
+                            {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                            {% else %}
+                        <div class="input-group input-group-outline mb-3">
+                            {{ form.email.label(class="form-label") }}   
+                            {{ form.email(class="form-control") }}
+                        </div>
+                            {% endif %}
+                    {# PASSWORD FIELD #}
+                    {% if form.password.errors %}
+                    <div class="input-group input-group-outline mb-3 is-invalid is-filled">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+                      </div>
+                      <div class="invalid-feedback mb-4">
+                        {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="input-group input-group-outline mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+                      </div>
+                    {% endif %}
+                    {# CONFIRM PASSWORD FIELD #}
+                    {% if form.confirm_password.errors %}
+                    <div class="input-group input-group-outline mb-3 is-invalid is-filled">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control") }}
+                      </div>
+                      <div class="invalid-feedback mb-4">
+                        {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="input-group input-group-outline mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control") }}
+                      </div>
+                    {% endif %}
+                    {# REGISTER BUTTON #}
+                    <div class="text-center">
+                        {{ form.register(class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0") }}
+                    </div>
+                  </form>
+                </div>
+                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                  <p class="mb-2 text-sm mx-auto">
+                    Already have an account?
+                    <a href="{{ url_for('admin.login') }}" class="text-primary text-gradient font-weight-bold">Log in</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endblock content %}

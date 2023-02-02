@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mx-4 my-3">Settings</h1>
+{# NAVIGATION TABS #}
+<div class="container my-5">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-general-tab" data-bs-toggle="tab" 
+            data-bs-target="#nav-general" type="button" role="tab"> 
+                General
+            </button>
+
+            <button class="nav-link" id="nav-security-tab" data-bs-toggle="tab" 
+            data-bs-target="#nav-security" type="button" role="tab"> 
+                Security
+            </button>
+
+            <button class="nav-link" id="nav-backup-tab" data-bs-toggle="tab" 
+            data-bs-target="#nav-backup" type="button" role="tab"> 
+                Backup
+            </button>
+
+            <button class="nav-link" id="nav-logs-tab" data-bs-toggle="tab" 
+            data-bs-target="#nav-logs" type="button" role="tab"> 
+                Logs
+            </button>
+
+            <button class="nav-link" id="nav-about-tab" data-bs-toggle="tab" 
+            data-bs-target="#nav-about" type="button" role="tab"> 
+                About
+            </button>
+
+        </div>
+    </nav>
+    {# TAB CONTENT #}
+    <form method="post">
+    <div class="tab-content" id="nav-tabContent">
+        <div class="mt-4"></div>
+            
+            {# GENERAL TAB #}
+            <div class="tab-pane show active p-3" id="nav-general" role="tabpanel">
+                <div class="col-md-6">
+                    <h3>General</h3>
+                    This is the general tab <br>
+
+                    
+
+
+
+
+                </div>
+            </div>
+            {# SECURITY TAB #}
+            <div class="tab-pane p-3"id="nav-security" role="tabpanel">
+                <h3>Security</h3>
+                {# Enable API #}
+                            <div class="form-check form-switch">
+                                {{ form.enable_api.label(class="form-check-label") }}
+                                {{ form.enable_api(class="form-check-input") }}
+                                <a tabindex="0" class="" role="" data-bs-toggle="popover" data-bs-trigger="focus"
+                                    title="Enable API" data-bs-content="When this toggle is checked, you can use the Brokerboss RESTapi to configure your broker. When unchecked all api endpoints are disabled. Read the documentation to find out what endpoints are available through the API."><i class="fas fa-info-circle"></i></a>
+                                {% if form.errors %}
+                                {% for error in form.errors.enable_api %}
+                                <div class="text-danger"><small>{{ error }}</small></div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+            </div>
+            {# BACKUP TAB #}
+            <div class="tab-pane p-3"id="nav-backup" role="tabpanel">
+                <h3>Backup</h3>
+                Export all configuration files: <br>
+                <a href= "{{ url_for('download.download_configuration_file') }}" class="btn btn-secondary my-4">Export configuration file</a>
+                <a href= "{{ url_for('download.download_acl_file') }}" class="btn btn-secondary my-4">Export ACL file</a>
+                <a href= "{{ url_for('download.download_password_file') }}" class="btn btn-secondary my-4">Export password file</a>
+                    
+            </div>
+            {# LOGGING TAB #}
+            <div class="tab-pane p-3"id="nav-logs" role="tabpanel">
+                <h3>Logs</h3>
+                This is the logs tab
+            </div>
+            {# ABOUT TAB #}
+            <div class="tab-pane p-3"id="nav-about" role="tabpanel">
+                <h3>About</h3>
+                This is the about tab
+            </div>
+        </div>
+        <div class="form-check">
+            {{ form.save(class="px-5 btn btn-lg btn-primary") }}
+            </div>
+            {{ form.hidden_tag() }}
+    </form>
+</div>
+
+{% endblock content%}
+
+
