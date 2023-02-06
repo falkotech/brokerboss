@@ -138,3 +138,4 @@ dmypy.json
 cython_debug/
 my_secrets.py
 run.sh
+.DS_Store
