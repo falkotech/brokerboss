@@ -4,6 +4,11 @@
 
 BrokerBoss is an open-source web application that helps you set up and manage a Mosquitto MQTT broker with ease. With Brokerboss, you can avoid the hassle of dealing with command line tasks or configuration files.
 
+### Screenshots
+![broker config](docs/screenshots/Screenshot_broker_config.png?raw=true)
+![users](docs/screenshots/Screenshot_users.png?raw=true)
+![ACL config](docs/screenshots/Screenshot_ACL.png?raw=true)
+
 ### Purpose
 
 The purpose of Brokerboss is to simplify the process of setting up and managing a Mosquitto MQTT broker. It provides a user-friendly interface and REST api endpoints for performing common broker tasks (like restarting the broker or adding users). BrokerBoss allows you to focus on your MQTT projects without getting bogged down in command line commands and configuration files. By using Brokerboss, you can get your broker up and running quickly and easily, freeing up time and resources to concentrate on other important aspects of your projects.
