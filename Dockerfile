@@ -1,7 +1,7 @@
 
 
 
-FROM python:3.9-slim-bullseye
+FROM python:3.9-slim-bullseye AS base
 WORKDIR /
 RUN set -xe \
     && apt-get update \
@@ -18,13 +18,15 @@ RUN mkdir -p /mosquitto/log
 RUN echo "" > /mosquitto/log/mosquitto.log
 COPY ./mosquitto/mosquitto.service /etc/systemd/system/mosquitto.service
 COPY ./log_config /log_config
-COPY ./run_app.py /
-COPY ./app /app
 # Copy the mosquitto configuration file to the container
 COPY ./mosquitto/config/mosquitto.conf /mosquitto/config/mosquitto.conf
 # Copy the mosquitto acl file to the container
 COPY ./mosquitto/config/acl.acl /mosquitto/config/acl.acl
+# Copy the tests to the container
+COPY ./tests /tests
+COPY ./run_app.py /
+COPY ./app /app
 EXPOSE 1883
 EXPOSE 5000
-#ENTRYPOINT [ "mosquitto", "-c", "/mosquitto/config/mosquitto.conf", "-d" ]
+
 CMD ["python3", "/run_app.py"]
