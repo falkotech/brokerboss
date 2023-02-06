@@ -1,10 +1,11 @@
 """Test webui routes"""
 from bs4 import BeautifulSoup
 from app.webui.admin.models import User
-
+import logging
 
 
 def test_register_page(client, app):
+    logging.info(f"PYTEST connected to database with name '{app.db.db.name}'")
     response = client.get('/register/')
     assert response.status_code == 200
     assert b'Register' in response.data

@@ -8,16 +8,16 @@ services:
       - "1883:1883"
     environment:
       - FLASK_SECRET_KEY=change-this-secreeeet
-      - MONGODB_URI=mongodb://rootuser:rootpass@mongo:27017
+      - MONGODB_URI=mongodb://theuser:thepass@mongo:27017
     depends_on:
       - mongo
   mongo:
     image: mongo:latest
+    command: mongod --quiet --logpath /dev/null
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: rootuser
-      MONGO_INITDB_ROOT_PASSWORD: rootpass
-      MONGO_LOG_LEVEL: error
+      MONGO_INITDB_ROOT_USERNAME: theuser
+      MONGO_INITDB_ROOT_PASSWORD: thepass
     volumes:
       - mongo-data:/data/db
     ports:
