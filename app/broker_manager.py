@@ -33,6 +33,8 @@ class BrokerManager():
                     # Stop the Mosquitto process
                     proc.terminate()
                     # proc.kill()
+                    # Wait for the process to complete
+                    proc.wait()
                     return True
         except Exception as e:
             logging.error(f"stop_broker: {e}, type: {type(e)}")
